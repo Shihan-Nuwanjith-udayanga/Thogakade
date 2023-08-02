@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seekerscloud.pos.controller.CusomterFormController">
+<AnchorPane prefHeight="400.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seekerscloud.pos.controller.CustomerFormController">
    <children>
       <JFXButton layoutX="12.0" layoutY="11.0" style="-fx-background-color: #34495e;" text="Back to Home" textFill="WHITE">
          <font>
@@ -27,12 +27,12 @@
          </font>
       </Label>
       <Separator layoutX="155.0" layoutY="47.0" prefHeight="3.0" prefWidth="334.0" />
-      <TextField layoutX="12.0" layoutY="72.0" promptText="Customer Id" />
-      <TextField layoutX="173.0" layoutY="72.0" promptText="Name" />
-      <TextField layoutX="334.0" layoutY="72.0" promptText="Address" />
-      <TextField layoutX="495.0" layoutY="72.0" promptText="Salary" />
+      <TextField fx:id="txtId" layoutX="12.0" layoutY="72.0" promptText="Customer Id" />
+      <TextField fx:id="txtName" layoutX="173.0" layoutY="72.0" promptText="Name" />
+      <TextField fx:id="txtAddress" layoutX="334.0" layoutY="72.0" promptText="Address" />
+      <TextField fx:id="txtSalary" layoutX="495.0" layoutY="72.0" promptText="Salary" />
       <TextField layoutX="14.0" layoutY="107.0" prefHeight="25.0" prefWidth="471.0" promptText="Search Customer" />
-      <JFXButton layoutX="495.0" layoutY="107.0" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #2980b9;" text="Save Customer" textFill="WHITE">
+      <JFXButton layoutX="495.0" layoutY="107.0" onAction="#saveCustomerOnAction" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #2980b9;" text="Save Customer" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
