@@ -31,7 +31,7 @@
       <TextField fx:id="txtName" layoutX="173.0" layoutY="72.0" promptText="Name" />
       <TextField fx:id="txtAddress" layoutX="334.0" layoutY="72.0" promptText="Address" />
       <TextField fx:id="txtSalary" layoutX="495.0" layoutY="72.0" promptText="Salary" />
-      <TextField layoutX="14.0" layoutY="107.0" prefHeight="25.0" prefWidth="471.0" promptText="Search Customer" />
+      <TextField fx:id="txtSearch" layoutX="14.0" layoutY="107.0" prefHeight="25.0" prefWidth="471.0" promptText="Search Customer" />
       <JFXButton fx:id="btnSaveCustomer" layoutX="495.0" layoutY="107.0" onAction="#saveCustomerOnAction" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #2980b9;" text="Save Customer" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
