@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 public class CustomerFormController {
@@ -68,7 +69,7 @@ public class CustomerFormController {
 
     private void setUi(String ui) throws IOException {
         Stage stage = (Stage) customerFormContext.getScene().getWindow();
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/" + ui + ".fxml"))));
+        stage.setScene(new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../view/" + ui + ".fxml")))));
     }
 
     public void btnBackToHomeOnAction(ActionEvent actionEvent) throws IOException {

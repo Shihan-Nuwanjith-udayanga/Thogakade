@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class DashboardFormController {
     public AnchorPane dashboardContext;
@@ -24,26 +25,26 @@ public class DashboardFormController {
         setDateAndTime();
     }
 
-    private void setui(String ui) throws IOException {
+    private void setUi(String ui) throws IOException {
         Stage stage = (Stage)dashboardContext.getScene().getWindow();
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/"+ui+".fxml"))));
+        stage.setScene(new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../view/" + ui + ".fxml")))));
         stage.centerOnScreen();
     }
 
     public void openCustomerFormOnAction(ActionEvent actionEvent) throws IOException {
-        setui("CustomerForm");
+        setUi("CustomerForm");
     }
 
     public void openItemFormOnAction(ActionEvent actionEvent) throws IOException {
-        setui("ItemForm");
+        setUi("ItemForm");
     }
 
     public void openPlaceOrderFormOnAction(ActionEvent actionEvent) throws IOException {
-        setui("OrderDetailsForm");
+        setUi("OrderDetailsForm");
     }
 
     public void openOrderDetailsFormOnAction(ActionEvent actionEvent) throws IOException {
-        setui("PlaceOrderForm");
+        setUi("PlaceOrderForm");
 
     }
 
