@@ -1,5 +1,6 @@
 package com.seekerscloud.pos.controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.seekerscloud.pos.db.Database;
 import com.seekerscloud.pos.model.Customer;
 import com.seekerscloud.pos.view.tm.CustomerTM;
@@ -29,6 +30,7 @@ public class CustomerFormController {
     public TableColumn<Customer, String> colAddress;
     public TableColumn<Customer, String> colSalary;
     public TableColumn<Customer, Button> colOption;
+    public JFXButton btnSaveCustomer;
 
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -39,6 +41,20 @@ public class CustomerFormController {
 
         searchCustomers();
         clearFields();
+
+        tblCustomer.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (null!=newValue){ // newValue!=null
+                setData(newValue);
+            }
+        });
+    }
+
+    private void setData(CustomerTM tm){
+        txtId.setText(tm.getId());
+        txtName.setText(tm.getName());
+        txtAddress.setText(tm.getAddress());
+        txtSalary.setText(String.valueOf(tm.getSalary()));
+        btnSaveCustomer.setText("Update Customer");
     }
 
     private void setUi(String ui) throws IOException {
@@ -52,13 +68,26 @@ public class CustomerFormController {
 
     public void saveCustomerOnAction(ActionEvent actionEvent) {
         Customer c1 = new Customer(txtId.getText(), txtName.getText(), txtAddress.getText(), Double.parseDouble(txtSalary.getText()));
-        boolean isSaved = Database.customerTable.add(c1);
-        if (isSaved) {
-            searchCustomers();
-            clearFields();
-            new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
-        } else {
-            new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+        if (btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")){
+            boolean isSaved = Database.customerTable.add(c1);
+            if (isSaved) {
+                searchCustomers();
+                clearFields();
+                new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
+            } else {
+                new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+            }
+        }else{
+            for (int i=0; i<Database.customerTable.size(); i++){
+                if (txtId.getText().equalsIgnoreCase(Database.customerTable.get(i).getId())){
+                    Database.customerTable.get(i).setName(txtName.getText());
+                    Database.customerTable.get(i).setAddress(txtAddress.getText());
+                    Database.customerTable.get(i).setSalary(Double.parseDouble(txtSalary.getText()));
+                    searchCustomers();
+                    new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
+                    clearFields();
+                }
+            }
         }
     }
 
@@ -94,5 +123,8 @@ public class CustomerFormController {
         txtName.clear();
         txtAddress.clear();
         txtSalary.clear();
+    }
+
+    public void newCustomerOnAction(ActionEvent actionEvent) {
     }
 }
