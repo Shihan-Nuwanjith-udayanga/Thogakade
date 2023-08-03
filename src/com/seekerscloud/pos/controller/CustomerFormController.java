@@ -31,6 +31,8 @@ public class CustomerFormController {
     public TableColumn<Customer, String> colSalary;
     public TableColumn<Customer, Button> colOption;
     public JFXButton btnSaveCustomer;
+    public TextField txtSearch;
+    private String searchText = "";
 
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -39,22 +41,29 @@ public class CustomerFormController {
         colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
         colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
 
-        searchCustomers();
+        searchCustomers(searchText);
         clearFields();
 
+        //lister
         tblCustomer.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (null!=newValue){ // newValue!=null
+            if (null != newValue) { // newValue!=null
                 setData(newValue);
             }
         });
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchText = newValue;
+            searchCustomers(searchText);
+        });
     }
 
-    private void setData(CustomerTM tm){
+    private void setData(CustomerTM tm) {
         txtId.setText(tm.getId());
         txtName.setText(tm.getName());
         txtAddress.setText(tm.getAddress());
         txtSalary.setText(String.valueOf(tm.getSalary()));
         btnSaveCustomer.setText("Update Customer");
+
     }
 
     private void setUi(String ui) throws IOException {
@@ -68,22 +77,22 @@ public class CustomerFormController {
 
     public void saveCustomerOnAction(ActionEvent actionEvent) {
         Customer c1 = new Customer(txtId.getText(), txtName.getText(), txtAddress.getText(), Double.parseDouble(txtSalary.getText()));
-        if (btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")){
+        if (btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")) {
             boolean isSaved = Database.customerTable.add(c1);
             if (isSaved) {
-                searchCustomers();
+                searchCustomers(searchText);
                 clearFields();
                 new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
             } else {
                 new Alert(Alert.AlertType.WARNING, "Try Again!").show();
             }
-        }else{
-            for (int i=0; i<Database.customerTable.size(); i++){
-                if (txtId.getText().equalsIgnoreCase(Database.customerTable.get(i).getId())){
+        } else {
+            for (int i = 0; i < Database.customerTable.size(); i++) {
+                if (txtId.getText().equalsIgnoreCase(Database.customerTable.get(i).getId())) {
                     Database.customerTable.get(i).setName(txtName.getText());
                     Database.customerTable.get(i).setAddress(txtAddress.getText());
                     Database.customerTable.get(i).setSalary(Double.parseDouble(txtSalary.getText()));
-                    searchCustomers();
+                    searchCustomers(searchText);
                     new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
                     clearFields();
                 }
@@ -91,29 +100,31 @@ public class CustomerFormController {
         }
     }
 
-    private void searchCustomers() {
+    private void searchCustomers(String text) {
         ObservableList<CustomerTM> tmList = FXCollections.observableArrayList();
         for (Customer c : Database.customerTable
         ) {
-            Button btn = new Button("Delete");
-            CustomerTM tm = new CustomerTM(c.getId(), c.getName(), c.getAddress(), c.getSalary(), btn);
-            tmList.add(tm);
+            if (c.getName().contains(text) || c.getAddress().contains(text)) {
+                Button btn = new Button("Delete");
+                CustomerTM tm = new CustomerTM(c.getId(), c.getName(), c.getAddress(), c.getSalary(), btn);
+                tmList.add(tm);
 
-            btn.setOnAction(event -> {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                        "Are you sure whether do you want to delete this customer?",
-                        ButtonType.YES,ButtonType.NO);
-                Optional<ButtonType> buttonType = alert.showAndWait();
-                if (buttonType.get() == ButtonType.YES){
-                    boolean isDeleted = Database.customerTable.remove(c);
-                    if (isDeleted) {
-                        searchCustomers();
-                        new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
-                    } else {
-                        new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                btn.setOnAction(event -> {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                            "Are you sure whether do you want to delete this customer?",
+                            ButtonType.YES, ButtonType.NO);
+                    Optional<ButtonType> buttonType = alert.showAndWait();
+                    if (buttonType.get() == ButtonType.YES) {
+                        boolean isDeleted = Database.customerTable.remove(c);
+                        if (isDeleted) {
+                            searchCustomers(searchText);
+                            new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
+                        } else {
+                            new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                        }
                     }
-                }
-            });
+                });
+            }
         }
         tblCustomer.setItems(tmList);
     }
@@ -126,5 +137,6 @@ public class CustomerFormController {
     }
 
     public void newCustomerOnAction(ActionEvent actionEvent) {
+        btnSaveCustomer.setText("Save Customer");
     }
 }
