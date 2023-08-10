@@ -41,6 +41,40 @@ public class PlaceOrderFormController {
         setDateAndOrderId();
         loadAllCustomerIds();
         loadAllItemIds();
+
+        cmbCustomerId.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue!=null){
+                setCustomerDetails();
+            }
+        });
+
+        cmbItemCode.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+           if (newValue != null){
+               setItemDetails();
+           }
+        });
+    }
+
+    private void setItemDetails() {
+        for (Item i: Database.itemTable
+             ) {
+            if (i.getCode().equals(cmbItemCode.getValue())){
+                txtDescription.setText(i.getDescription());
+                txtUnitPrice.setText(String.valueOf(i.getUniPrice()));
+                txtQtyOnHand.setText(String.valueOf(i.getQtyOnHand()));
+            }
+        }
+    }
+
+    private void setCustomerDetails() {
+        for (Customer c: Database.customerTable
+             ) {
+            if (c.getId().equals(cmbCustomerId.getValue())){
+                txtName.setText(c.getName());
+                txtAddress.setText(c.getAddress());
+                txtSalary.setText(String.valueOf(c.getSalary()));
+            }
+        }
     }
 
     private void loadAllItemIds() {
