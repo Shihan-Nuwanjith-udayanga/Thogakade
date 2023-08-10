@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="dashboardContext" prefHeight="233.0" prefWidth="591.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seekerscloud.pos.controller.DashboardFormController">
+<AnchorPane fx:id="dashboardContext" prefHeight="233.0" prefWidth="591.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.seekerscloud.pos.controller.DashboardFormController">
    <children>
       <JFXButton layoutX="15.0" layoutY="50.0" onAction="#openCustomerFormOnAction" prefHeight="62.0" prefWidth="180.0" style="-fx-background-color: #1abc9c;" text="Customer Management" textFill="WHITE">
          <font>
