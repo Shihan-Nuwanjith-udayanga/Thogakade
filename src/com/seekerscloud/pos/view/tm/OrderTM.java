@@ -1,7 +1,6 @@
 package com.seekerscloud.pos.view.tm;
 
 import javafx.scene.control.Button;
-
 import java.util.Date;
 
 public class OrderTM {
