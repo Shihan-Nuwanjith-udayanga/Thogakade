@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="customerFormContext" prefHeight="400.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seekerscloud.pos.controller.CustomerFormController">
+<AnchorPane fx:id="customerFormContext" prefHeight="400.0" prefWidth="661.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.seekerscloud.pos.controller.CustomerFormController">
    <children>
       <JFXButton layoutX="12.0" layoutY="11.0" onAction="#btnBackToHomeOnAction" style="-fx-background-color: #34495e;" text="Back to Home" textFill="WHITE">
          <font>
