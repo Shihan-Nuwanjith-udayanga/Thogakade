@@ -2,12 +2,14 @@ package com.seekerscloud.pos.db;
 
 import com.seekerscloud.pos.model.Customer;
 import com.seekerscloud.pos.model.Item;
+import com.seekerscloud.pos.model.Order;
 
 import java.util.ArrayList;
 
 public class Database {
     public static ArrayList<Customer> customerTable = new ArrayList<>();
     public static ArrayList<Item> itemTable = new ArrayList<>();
+    public static ArrayList<Order> orderTable = new ArrayList<>();
 
     static {
         customerTable.add(new Customer("C001","Shihan","Galle",85000));
