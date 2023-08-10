@@ -3,6 +3,8 @@ package com.seekerscloud.pos.controller;
 import com.seekerscloud.pos.db.Database;
 import com.seekerscloud.pos.model.Customer;
 import com.seekerscloud.pos.model.Item;
+import com.seekerscloud.pos.model.ItemDetails;
+import com.seekerscloud.pos.model.Order;
 import com.seekerscloud.pos.view.tm.CartTM;
 import com.seekerscloud.pos.view.tm.CustomerTM;
 import javafx.collections.FXCollections;
@@ -17,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
@@ -47,6 +50,7 @@ public class PlaceOrderFormController {
         setDateAndOrderId();
         loadAllCustomerIds();
         loadAllItemIds();
+        setOrderId();
 
         cmbCustomerId.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue!=null){
@@ -66,6 +70,18 @@ public class PlaceOrderFormController {
         colQty.setCellValueFactory(new PropertyValueFactory<>("qty"));
         colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
         colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
+    }
+
+    private void setOrderId() {
+        if (Database.orderTable.isEmpty()){
+            txtOrderId.setText("D-1");
+            return;
+        }
+        String tempOrderId = Database.orderTable.get(Database.orderTable.size()-1).getOrderId(); // D-3
+        String[] array = tempOrderId.split("-");//[D-3
+        int tempNumber = Integer.parseInt(array[1]);
+        int finalizeOrderId = tempNumber+1;
+        txtOrderId.setText("D-"+finalizeOrderId);
     }
 
     private void setItemDetails() {
@@ -184,6 +200,50 @@ public class PlaceOrderFormController {
 
 
     public void placeOrderOnAction(ActionEvent actionEvent) {
+        if (obList.isEmpty()) return;
+        ArrayList<ItemDetails> details = new ArrayList<>();
+        for (CartTM tm: obList
+             ) {
+            details.add(new ItemDetails(tm.getCode(),tm.getUnitPrice(), tm.getQty()));
+        }
+        Order order = new Order(
+                txtOrderId.getText(), new Date(),
+                Double.parseDouble(lblTotal.getText()),
+                cmbCustomerId.getValue(),details
+        );
+        Database.orderTable.add(order);
+        manageQty();
+        clearAll();
+    }
 
+    private void manageQty() {
+        for (CartTM tm:obList
+             ) {
+            for (Item i: Database.itemTable
+                 ) {
+                if (i.getCode().equals(tm.getCode())){
+                    i.setQtyOnHand(i.getQtyOnHand()-tm.getQty());
+                    break;
+                }
+            }
+        }
+    }
+
+    private void clearAll(){
+        obList.clear();
+        calculateTotal();
+
+        txtName.clear();
+        txtAddress.clear();
+        txtSalary.clear();
+
+        //=================
+        cmbCustomerId.setValue(null);
+        cmbItemCode.setValue(null);
+        //=================
+
+        clearFields();
+        cmbCustomerId.requestFocus();
+        setOrderId();
     }
 }
