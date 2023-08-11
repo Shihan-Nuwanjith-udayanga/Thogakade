@@ -155,12 +155,16 @@ public class CustomerFormController {
     }
 
     private void searchCustomers(String text) {
+        String searchText = "%"+text+"%";
         try {
             ObservableList<CustomerTM> tmList = FXCollections.observableArrayList();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "Shihan@1998");
-            String sql = "SELECT * FROM Customer";
+//            String sql = "SELECT * FROM Customer";
+            String sql = "SELECT * FROM Customer WHERE name LIKE ? || address LIKE ?";
             PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,searchText);
+            statement.setString(2,searchText);
             ResultSet set = statement.executeQuery();
 
             while (set.next()) {
