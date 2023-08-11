@@ -87,12 +87,12 @@ public class CustomerFormController {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 //2 step [create connection]
                 Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "Shihan@1998");
-                String sql = "INSERT INTO Customer Values (?,?,?,?)";
+                String sql = "INSERT INTO Customer VALUES (?,?,?,?)";
                 PreparedStatement statement = connection.prepareStatement(sql);
-                statement.setString(1,c1.getId());
-                statement.setString(2,c1.getName());
-                statement.setString(3,c1.getAddress());
-                statement.setDouble(4,c1.getSalary());
+                statement.setString(1, c1.getId());
+                statement.setString(2, c1.getName());
+                statement.setString(3, c1.getAddress());
+                statement.setDouble(4, c1.getSalary());
                 //3 step [create statement]
 //                Statement statement = connection.createStatement();
                 //4 step [create query]
@@ -100,7 +100,7 @@ public class CustomerFormController {
                 //5 step [statement execute]
 //                int isSaved = statement.executeUpdate(sql);
 
-                if (statement.executeUpdate(sql)>0) {
+                if (statement.executeUpdate() > 0) {
                     searchCustomers(searchText);
                     clearFields();
                     new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
@@ -136,7 +136,47 @@ public class CustomerFormController {
     }
 
     private void searchCustomers(String text) {
-        ObservableList<CustomerTM> tmList = FXCollections.observableArrayList();
+        try {
+            ObservableList<CustomerTM> tmList = FXCollections.observableArrayList();
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "Shihan@1998");
+            String sql = "SELECT * FROM Customer";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet set = statement.executeQuery();
+
+            while (set.next()) {
+                Button btn = new Button("Delete");
+                CustomerTM tm = new CustomerTM(
+                        set.getString(1),
+                        set.getString(2),
+                        set.getString(3),
+                        set.getDouble(4),
+                        btn);
+                tmList.add(tm);
+
+                /*btn.setOnAction(event -> {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                            "Are you sure whether do you want to delete this customer?",
+                            ButtonType.YES, ButtonType.NO);
+                    Optional<ButtonType> buttonType = alert.showAndWait();
+                    if (buttonType.get() == ButtonType.YES) {
+                        boolean isDeleted = Database.customerTable.remove(c);
+                        if (isDeleted) {
+                            searchCustomers(searchText);
+                            new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
+                        } else {
+                            new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                        }
+                    }
+                });*/
+            }
+            tblCustomer.setItems(tmList);
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        /*ObservableList<CustomerTM> tmList = FXCollections.observableArrayList();
         for (Customer c : Database.customerTable
         ) {
             if (c.getName().contains(text) || c.getAddress().contains(text)) {
@@ -161,17 +201,17 @@ public class CustomerFormController {
                 });
             }
         }
-        tblCustomer.setItems(tmList);
+        tblCustomer.setItems(tmList);*/
     }
 
-    private void clearFields() {
-        txtId.clear();
-        txtName.clear();
-        txtAddress.clear();
-        txtSalary.clear();
-    }
+        private void clearFields () {
+            txtId.clear();
+            txtName.clear();
+            txtAddress.clear();
+            txtSalary.clear();
+        }
 
-    public void newCustomerOnAction(ActionEvent actionEvent) {
-        btnSaveCustomer.setText("Save Customer");
+        public void newCustomerOnAction (ActionEvent actionEvent){
+            btnSaveCustomer.setText("Save Customer");
+        }
     }
-}
