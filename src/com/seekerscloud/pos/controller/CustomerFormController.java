@@ -154,21 +154,36 @@ public class CustomerFormController {
                         btn);
                 tmList.add(tm);
 
-                /*btn.setOnAction(event -> {
+                btn.setOnAction(event -> {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                             "Are you sure whether do you want to delete this customer?",
                             ButtonType.YES, ButtonType.NO);
                     Optional<ButtonType> buttonType = alert.showAndWait();
                     if (buttonType.get() == ButtonType.YES) {
-                        boolean isDeleted = Database.customerTable.remove(c);
+                        try {
+                            Class.forName("com.mysql.cj.jdbc.Driver");
+                            Connection connection1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "Shihan@1998");
+                            String sql1 = "DELETE FROM Customer WHERE id=?";
+                            PreparedStatement statement1 = connection1.prepareStatement(sql1);
+                            statement1.setString(1,tm.getId());
+                            if (statement1.executeUpdate()>0) {
+                                searchCustomers(searchText);
+                                new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
+                            } else {
+                                new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                            }
+                        } catch (ClassNotFoundException | SQLException e) {
+                            e.printStackTrace();
+                        }
+                       /* boolean isDeleted = Database.customerTable.remove(c);
                         if (isDeleted) {
                             searchCustomers(searchText);
                             new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
                         } else {
                             new Alert(Alert.AlertType.WARNING, "Try Again!").show();
-                        }
+                        }*/
                     }
-                });*/
+                });
             }
             tblCustomer.setItems(tmList);
 
@@ -204,14 +219,14 @@ public class CustomerFormController {
         tblCustomer.setItems(tmList);*/
     }
 
-        private void clearFields () {
-            txtId.clear();
-            txtName.clear();
-            txtAddress.clear();
-            txtSalary.clear();
-        }
-
-        public void newCustomerOnAction (ActionEvent actionEvent){
-            btnSaveCustomer.setText("Save Customer");
-        }
+    private void clearFields() {
+        txtId.clear();
+        txtName.clear();
+        txtAddress.clear();
+        txtSalary.clear();
     }
+
+    public void newCustomerOnAction(ActionEvent actionEvent) {
+        btnSaveCustomer.setText("Save Customer");
+    }
+}
