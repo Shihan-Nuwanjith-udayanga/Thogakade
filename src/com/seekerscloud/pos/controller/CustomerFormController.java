@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.IOException;
+import java.sql.*;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -79,14 +80,47 @@ public class CustomerFormController {
     public void saveCustomerOnAction(ActionEvent actionEvent) {
         Customer c1 = new Customer(txtId.getText(), txtName.getText(), txtAddress.getText(), Double.parseDouble(txtSalary.getText()));
         if (btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")) {
-            boolean isSaved = Database.customerTable.add(c1);
-            if (isSaved) {
+
+            //==================Database===================
+            try {
+                //1 step [driver load ram]
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                //2 step [create connection]
+                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade", "root", "Shihan@1998");
+                String sql = "INSERT INTO Customer Values (?,?,?,?)";
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setString(1,c1.getId());
+                statement.setString(2,c1.getName());
+                statement.setString(3,c1.getAddress());
+                statement.setDouble(4,c1.getSalary());
+                //3 step [create statement]
+//                Statement statement = connection.createStatement();
+                //4 step [create query]
+//                String sql = "INSERT INTO Customer VALUES('"+c1.getId()+"','"+c1.getName()+"','"+c1.getAddress()+"','"+c1.getSalary()+"')";
+                //5 step [statement execute]
+//                int isSaved = statement.executeUpdate(sql);
+
+                if (statement.executeUpdate(sql)>0) {
+                    searchCustomers(searchText);
+                    clearFields();
+                    new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
+                } else {
+                    new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                }
+
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+            }
+            // =================================================
+
+//            boolean isSaved = Database.customerTable.add(c1);
+           /* if (isSaved) {
                 searchCustomers(searchText);
                 clearFields();
                 new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
             } else {
                 new Alert(Alert.AlertType.WARNING, "Try Again!").show();
-            }
+            }*/
         } else {
             for (int i = 0; i < Database.customerTable.size(); i++) {
                 if (txtId.getText().equalsIgnoreCase(Database.customerTable.get(i).getId())) {
