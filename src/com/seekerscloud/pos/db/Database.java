@@ -30,7 +30,7 @@ public class Database {
     public static ArrayList<Item> itemTable = new ArrayList<>();
     public static ArrayList<Order> orderTable = new ArrayList<>();
 
-   /* static {
+    static {
         customerTable.add(new Customer("C001","Shihan","Galle",85000));
         customerTable.add(new Customer("C002","Kamal","Matara",45000));
         customerTable.add(new Customer("C003","Amal","Colombo",25000));
@@ -42,5 +42,5 @@ public class Database {
         itemTable.add(new Item("I-003","Description 3",45,200));
         itemTable.add(new Item("I-004","Description 4",20,70));
         itemTable.add(new Item("I-005","Description 5",65,80));
-    }*/
+    }
 }
