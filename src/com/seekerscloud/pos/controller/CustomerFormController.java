@@ -1,8 +1,7 @@
 package com.seekerscloud.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.seekerscloud.pos.db.Database;
-import com.seekerscloud.pos.model.Customer;
+import com.seekerscloud.pos.model.CustomerDTO;
 import com.seekerscloud.pos.view.tm.CustomerTM;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.IOException;
 import java.sql.*;
@@ -27,11 +25,11 @@ public class CustomerFormController {
     public TextField txtAddress;
     public TextField txtSalary;
     public TableView<CustomerTM> tblCustomer;
-    public TableColumn<Customer, String> colId;
-    public TableColumn<Customer, String> colName;
-    public TableColumn<Customer, String> colAddress;
-    public TableColumn<Customer, String> colSalary;
-    public TableColumn<Customer, Button> colOption;
+    public TableColumn<CustomerDTO, String> colId;
+    public TableColumn<CustomerDTO, String> colName;
+    public TableColumn<CustomerDTO, String> colAddress;
+    public TableColumn<CustomerDTO, String> colSalary;
+    public TableColumn<CustomerDTO, Button> colOption;
     public JFXButton btnSaveCustomer;
     public TextField txtSearch;
     private String searchText = "";
@@ -78,7 +76,7 @@ public class CustomerFormController {
     }
 
     public void saveCustomerOnAction(ActionEvent actionEvent) {
-        Customer c1 = new Customer(txtId.getText(), txtName.getText(), txtAddress.getText(), Double.parseDouble(txtSalary.getText()));
+        CustomerDTO c1 = new CustomerDTO(txtId.getText(), txtName.getText(), txtAddress.getText(), Double.parseDouble(txtSalary.getText()));
         if (btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")) {
 
             //==================Database===================

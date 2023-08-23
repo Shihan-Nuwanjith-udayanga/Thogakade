@@ -1,15 +1,15 @@
 package com.seekerscloud.pos.model;
 
-public class Item {
+public class ItemDTO {
     private String code;
     private String description;
     private double uniPrice;
     private int qtyOnHand;
 
-    public Item() {
+    public ItemDTO() {
     }
 
-    public Item(String code, String description, double uniPrice, int qtyOnHand) {
+    public ItemDTO(String code, String description, double uniPrice, int qtyOnHand) {
         this.code = code;
         this.description = description;
         this.uniPrice = uniPrice;

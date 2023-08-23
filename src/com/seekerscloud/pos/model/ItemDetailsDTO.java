@@ -1,14 +1,14 @@
 package com.seekerscloud.pos.model;
 
-public class ItemDetails {
+public class ItemDetailsDTO {
     private String code;
     private double unitPrice;
     private int qty;
 
-    public ItemDetails() {
+    public ItemDetailsDTO() {
     }
 
-    public ItemDetails(String code, double unitPrice, int qty) {
+    public ItemDetailsDTO(String code, double unitPrice, int qty) {
         this.code = code;
         this.unitPrice = unitPrice;
         this.qty = qty;

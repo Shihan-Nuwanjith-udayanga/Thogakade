@@ -1,12 +1,11 @@
 package com.seekerscloud.pos.controller;
 
 import com.seekerscloud.pos.db.Database;
-import com.seekerscloud.pos.model.Customer;
-import com.seekerscloud.pos.model.Item;
-import com.seekerscloud.pos.model.ItemDetails;
-import com.seekerscloud.pos.model.Order;
+import com.seekerscloud.pos.model.CustomerDTO;
+import com.seekerscloud.pos.model.ItemDTO;
+import com.seekerscloud.pos.model.ItemDetailsDTO;
+import com.seekerscloud.pos.model.OrderDTO;
 import com.seekerscloud.pos.view.tm.CartTM;
-import com.seekerscloud.pos.view.tm.CustomerTM;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -85,7 +84,7 @@ public class PlaceOrderFormController {
     }
 
     private void setItemDetails() {
-        for (Item i: Database.itemTable
+        for (ItemDTO i: Database.itemTable
              ) {
             if (i.getCode().equals(cmbItemCode.getValue())){
                 txtDescription.setText(i.getDescription());
@@ -96,7 +95,7 @@ public class PlaceOrderFormController {
     }
 
     private void setCustomerDetails() {
-        for (Customer c: Database.customerTable
+        for (CustomerDTO c: Database.customerTable
              ) {
             if (c.getId().equals(cmbCustomerId.getValue())){
                 txtName.setText(c.getName());
@@ -107,13 +106,13 @@ public class PlaceOrderFormController {
     }
 
     private void loadAllItemIds() {
-        for(Item i:Database.itemTable){
+        for(ItemDTO i:Database.itemTable){
             cmbItemCode.getItems().add(i.getCode());
         }
     }
 
     private void loadAllCustomerIds() {
-        for(Customer c:Database.customerTable){
+        for(CustomerDTO c:Database.customerTable){
             cmbCustomerId.getItems().add(c.getId());
         }
     }
@@ -133,7 +132,7 @@ public class PlaceOrderFormController {
     }
 
     private boolean checkQty(String code, int qty){
-        for (Item i: Database.itemTable
+        for (ItemDTO i: Database.itemTable
              ) {
             if (code.equals(i.getCode())){
                 if (i.getQtyOnHand()>= qty){
@@ -226,12 +225,12 @@ public class PlaceOrderFormController {
 
     public void placeOrderOnAction(ActionEvent actionEvent) {
         if (obList.isEmpty()) return;
-        ArrayList<ItemDetails> details = new ArrayList<>();
+        ArrayList<ItemDetailsDTO> details = new ArrayList<>();
         for (CartTM tm: obList
              ) {
-            details.add(new ItemDetails(tm.getCode(),tm.getUnitPrice(), tm.getQty()));
+            details.add(new ItemDetailsDTO(tm.getCode(),tm.getUnitPrice(), tm.getQty()));
         }
-        Order order = new Order(
+        OrderDTO order = new OrderDTO(
                 txtOrderId.getText(), new Date(),
                 Double.parseDouble(lblTotal.getText()),
                 cmbCustomerId.getValue(),details
@@ -244,7 +243,7 @@ public class PlaceOrderFormController {
     private void manageQty() {
         for (CartTM tm:obList
              ) {
-            for (Item i: Database.itemTable
+            for (ItemDTO i: Database.itemTable
                  ) {
                 if (i.getCode().equals(tm.getCode())){
                     i.setQtyOnHand(i.getQtyOnHand()-tm.getQty());

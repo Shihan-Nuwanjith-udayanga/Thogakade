@@ -2,7 +2,7 @@ package com.seekerscloud.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.seekerscloud.pos.db.Database;
-import com.seekerscloud.pos.model.Item;
+import com.seekerscloud.pos.model.ItemDTO;
 import com.seekerscloud.pos.view.tm.ItemTM;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,11 +13,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -30,11 +28,11 @@ public class ItemFormController {
     public TextField txtSearch;
     public JFXButton btnSaveItem;
     public TableView<ItemTM> tblItem;
-    public TableColumn<Item, String> colCode;
-    public TableColumn<Item, String> colDescription;
-    public TableColumn<Item, String> colUnitPrice;
-    public TableColumn<Item, String> colQTYOnHand;
-    public TableColumn<Item, Button> colOption;
+    public TableColumn<ItemDTO, String> colCode;
+    public TableColumn<ItemDTO, String> colDescription;
+    public TableColumn<ItemDTO, String> colUnitPrice;
+    public TableColumn<ItemDTO, String> colQTYOnHand;
+    public TableColumn<ItemDTO, Button> colOption;
 
     private String searchText = "";
 
@@ -121,7 +119,7 @@ public class ItemFormController {
 
 
     public void saveItemOnAction(ActionEvent actionEvent) {
-        Item item = new Item(txtCode.getText(), txtDescription.getText(),
+        ItemDTO item = new ItemDTO(txtCode.getText(), txtDescription.getText(),
                 Double.parseDouble(txtUnitPrice.getText()), Integer.parseInt(txtQTYOnHand.getText()));
 
         if (btnSaveItem.getText().equalsIgnoreCase("Save Item")) {

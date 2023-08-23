@@ -3,17 +3,17 @@ package com.seekerscloud.pos.model;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Order {
+public class OrderDTO {
     private String orderId; //D-1
     private Date date;
     private double totalCost;
     private String customer;
-    private ArrayList<ItemDetails> itemDetails;
+    private ArrayList<ItemDetailsDTO> itemDetails;
 
-    public Order() {
+    public OrderDTO() {
     }
 
-    public Order(String orderId, Date date, double totalCost, String customer, ArrayList<ItemDetails> itemDetails) {
+    public OrderDTO(String orderId, Date date, double totalCost, String customer, ArrayList<ItemDetailsDTO> itemDetails) {
         this.orderId = orderId;
         this.date = date;
         this.totalCost = totalCost;
@@ -53,11 +53,11 @@ public class Order {
         this.customer = customer;
     }
 
-    public ArrayList<ItemDetails> getItemDetails() {
+    public ArrayList<ItemDetailsDTO> getItemDetails() {
         return itemDetails;
     }
 
-    public void setItemDetails(ArrayList<ItemDetails> itemDetails) {
+    public void setItemDetails(ArrayList<ItemDetailsDTO> itemDetails) {
         this.itemDetails = itemDetails;
     }
 }

@@ -1,16 +1,16 @@
 package com.seekerscloud.pos.model;
 
-public class Customer {
+public class CustomerDTO {
     private String id;
     private String name;
     private String address;
     private double salary;
 
-    public Customer() {
+    public CustomerDTO() {
 
     }
 
-    public Customer(String id, String name, String address, double salary) {
+    public CustomerDTO(String id, String name, String address, double salary) {
         this.id = id;
         this.name = name;
         this.address = address;
