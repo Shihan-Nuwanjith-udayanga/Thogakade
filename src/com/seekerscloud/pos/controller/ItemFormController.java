@@ -1,7 +1,7 @@
 package com.seekerscloud.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.seekerscloud.pos.db.Database;
+import com.seekerscloud.pos.db.DBConnection;
 import com.seekerscloud.pos.model.ItemDTO;
 import com.seekerscloud.pos.view.tm.ItemTM;
 import javafx.collections.FXCollections;
@@ -145,7 +145,7 @@ public class ItemFormController {
                 e.printStackTrace();
             }
 
-            boolean isSaved = Database.itemTable.add(item);
+            boolean isSaved = DBConnection.itemTable.add(item);
             if (isSaved) {
                 searchItems(searchText);
                 clearFields();
@@ -174,11 +174,11 @@ public class ItemFormController {
                 e.printStackTrace();
             }
 
-            for (int i = 0; i < Database.itemTable.size(); i++) {
-                if (txtCode.getText().equalsIgnoreCase(Database.itemTable.get(i).getCode())) {
-                    Database.itemTable.get(i).setDescription(txtDescription.getText());
-                    Database.itemTable.get(i).setUniPrice(Double.parseDouble(txtUnitPrice.getText()));
-                    Database.itemTable.get(i).setQtyOnHand(Integer.parseInt(txtQTYOnHand.getText()));
+            for (int i = 0; i < DBConnection.itemTable.size(); i++) {
+                if (txtCode.getText().equalsIgnoreCase(DBConnection.itemTable.get(i).getCode())) {
+                    DBConnection.itemTable.get(i).setDescription(txtDescription.getText());
+                    DBConnection.itemTable.get(i).setUniPrice(Double.parseDouble(txtUnitPrice.getText()));
+                    DBConnection.itemTable.get(i).setQtyOnHand(Integer.parseInt(txtQTYOnHand.getText()));
                     searchItems(searchText);
                     new Alert(Alert.AlertType.INFORMATION, "Item Updated!").show();
                     clearFields();

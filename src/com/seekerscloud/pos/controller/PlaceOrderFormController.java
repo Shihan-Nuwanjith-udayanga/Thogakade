@@ -1,6 +1,6 @@
 package com.seekerscloud.pos.controller;
 
-import com.seekerscloud.pos.db.Database;
+import com.seekerscloud.pos.db.DBConnection;
 import com.seekerscloud.pos.model.CustomerDTO;
 import com.seekerscloud.pos.model.ItemDTO;
 import com.seekerscloud.pos.model.ItemDetailsDTO;
@@ -72,11 +72,11 @@ public class PlaceOrderFormController {
     }
 
     private void setOrderId() {
-        if (Database.orderTable.isEmpty()){
+        if (DBConnection.orderTable.isEmpty()){
             txtOrderId.setText("D-1");
             return;
         }
-        String tempOrderId = Database.orderTable.get(Database.orderTable.size()-1).getOrderId(); // D-3
+        String tempOrderId = DBConnection.orderTable.get(DBConnection.orderTable.size()-1).getOrderId(); // D-3
         String[] array = tempOrderId.split("-");//[D-3
         int tempNumber = Integer.parseInt(array[1]);
         int finalizeOrderId = tempNumber+1;
@@ -84,7 +84,7 @@ public class PlaceOrderFormController {
     }
 
     private void setItemDetails() {
-        for (ItemDTO i: Database.itemTable
+        for (ItemDTO i: DBConnection.itemTable
              ) {
             if (i.getCode().equals(cmbItemCode.getValue())){
                 txtDescription.setText(i.getDescription());
@@ -95,7 +95,7 @@ public class PlaceOrderFormController {
     }
 
     private void setCustomerDetails() {
-        for (CustomerDTO c: Database.customerTable
+        for (CustomerDTO c: DBConnection.customerTable
              ) {
             if (c.getId().equals(cmbCustomerId.getValue())){
                 txtName.setText(c.getName());
@@ -106,13 +106,13 @@ public class PlaceOrderFormController {
     }
 
     private void loadAllItemIds() {
-        for(ItemDTO i:Database.itemTable){
+        for(ItemDTO i:DBConnection.itemTable){
             cmbItemCode.getItems().add(i.getCode());
         }
     }
 
     private void loadAllCustomerIds() {
-        for(CustomerDTO c:Database.customerTable){
+        for(CustomerDTO c:DBConnection.customerTable){
             cmbCustomerId.getItems().add(c.getId());
         }
     }
@@ -132,7 +132,7 @@ public class PlaceOrderFormController {
     }
 
     private boolean checkQty(String code, int qty){
-        for (ItemDTO i: Database.itemTable
+        for (ItemDTO i: DBConnection.itemTable
              ) {
             if (code.equals(i.getCode())){
                 if (i.getQtyOnHand()>= qty){
@@ -235,7 +235,7 @@ public class PlaceOrderFormController {
                 Double.parseDouble(lblTotal.getText()),
                 cmbCustomerId.getValue(),details
         );
-        Database.orderTable.add(order);
+        DBConnection.orderTable.add(order);
         manageQty();
         clearAll();
     }
@@ -243,7 +243,7 @@ public class PlaceOrderFormController {
     private void manageQty() {
         for (CartTM tm:obList
              ) {
-            for (ItemDTO i: Database.itemTable
+            for (ItemDTO i: DBConnection.itemTable
                  ) {
                 if (i.getCode().equals(tm.getCode())){
                     i.setQtyOnHand(i.getQtyOnHand()-tm.getQty());

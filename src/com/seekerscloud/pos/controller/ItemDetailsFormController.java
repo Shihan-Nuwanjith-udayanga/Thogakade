@@ -1,6 +1,6 @@
 package com.seekerscloud.pos.controller;
 
-import com.seekerscloud.pos.db.Database;
+import com.seekerscloud.pos.db.DBConnection;
 import com.seekerscloud.pos.model.ItemDetailsDTO;
 import com.seekerscloud.pos.model.OrderDTO;
 import com.seekerscloud.pos.view.tm.ItemDetailsTM;
@@ -34,7 +34,7 @@ public class ItemDetailsFormController {
     }
 
     public void loadOrderDetails(String id){
-        for (OrderDTO o: Database.orderTable
+        for (OrderDTO o: DBConnection.orderTable
              ) {
             if (o.getOrderId().equals(id)){
                 ObservableList<ItemDetailsTM> tmList = FXCollections.observableArrayList();

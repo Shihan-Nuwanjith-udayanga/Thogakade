@@ -1,6 +1,6 @@
 package com.seekerscloud.pos.controller;
 
-import com.seekerscloud.pos.db.Database;
+import com.seekerscloud.pos.db.DBConnection;
 import com.seekerscloud.pos.model.OrderDTO;
 import com.seekerscloud.pos.view.tm.OrderTM;
 import javafx.collections.FXCollections;
@@ -41,7 +41,7 @@ public class OrderDetailsFormController {
 
     private void loadOrders() {
         ObservableList<OrderTM> tmList = FXCollections.observableArrayList();
-        for (OrderDTO o: Database.orderTable
+        for (OrderDTO o: DBConnection.orderTable
              ) {
             Button btn = new Button("View More");
             OrderTM tm = new OrderTM(o.getOrderId(),o.getCustomer(),o.getDate(),o.getTotalCost(),btn);
